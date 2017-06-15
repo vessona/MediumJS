@@ -1,46 +1,44 @@
-<html><!--test test-->
+<html>
 <head>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
-		
-		var cardsInDeck = new Array();
-		var P1 = 0;
-		var P1Name = "Player 1";
-		var P2Name = "Player 2";
+		var cardsInDeck = new Array(); //Array of cards not draw/in the deck
+		var P1 = 0; //Score or total value of the cards Player 1 has
+		var P2 = 0; //Score or total value of the cards Player 2 has
+		var P1Name = "Player 1"; //Name of Player 1, can be changed by user
+		var P2Name = "Player 2"; //Name of Player 2, can be changed by user
 		var winner ="";
 		var loser ="";
-		var P2 = 0;
-		var turn = 1;
-		var endedTurn = "false";
-		var cardDrew;
-		var cardValue;
-		var suite;
-		var p1RevealedAces = 0;
-		var p2RevealedAces = 0;
-		var p1HiddenAces = 0;
-		var p2HiddenAces = 0;
-		function deckShuffle(){
-		cardsInDeck.splice(0,cardsInDeck.length);
-		for(index = 0; index < 52; index++)
+    	var turn = 1; //Variable to keep track of turns
+		var endedTurn = "false"; //Checks if the last turn done was "End of turn"
+		var cardDrew; //Variable containing the "value" of the card drawn. This value is from 1-52 symbolizing the cards in a deck.
+		var suite; //Contains the suite of a draw card such as Hearts or Diamonds
+		var p1RevealedAces = 0; //Player 1 Aces with the value of 11
+		var p2RevealedAces = 0; //Player 2 Aces with the value of 11
+		var p1HiddenAces = 0; //Player 2 Aces with the value of 1
+		var p2HiddenAces = 0; //Player 2 Aces with the value of 1
+		function deckShuffle(){ //Function called to restore deck to its unused state as well as other relevant variables to their initial state
+		cardsInDeck.splice(0,cardsInDeck.length); //Deletes contents of the array
+		for(index = 0; index < 52; index++) //Loop fills array with the Integers 1-52 representing cards
 			{
-			cardsInDeck.push(index+1);
+			cardsInDeck.push(index+1); //Because we won't have a card 0... Could actually add it and other "special" cards if we want to make something better than Blackjack
 			}
-		P1 = 0;
+		P1 = 0; //Shuffle function also returns everything to the start, Player1 and Player2 scores as well as turns, aces and the endedTurn checker are included in this for that reason.
 		P2 = 0;
 		turn = 1;
 		p1RevealedAces = 0;
 		p2RevealedAces = 0;
 		p1HiddenAces = 0;
 		p2HiddenAces = 0;
-		$("#pturn").html(turn);
+        endedTurn = "false";
+		$("#pturn").html(turn); //This and the following .html code is just to update the values the user sees
 		$("#p1").html(P1);
 		$("#p2").html(P2);
-		endedTurn = "false";
 		$("#result").html(null);
-		alert("Shuffling the deck!");
-		deal();
+		alert("Shuffling the deck!"); //Tells users deck is shuffling...
+		deal(); //Gives users two starting cards each...
 		}
-		function Ace(score1){
+		function Ace(score1){ //I hate this function! But
 		
 			var score = Number(score1);
 			if(turn == 2)
@@ -58,7 +56,6 @@
 					p1RevealedAces++;
 					p1HiddenAces--;
 				}
-
 			}
 			else 
 			{
@@ -75,7 +72,6 @@
 					p2RevealedAces++;
 					p2HiddenAces--;
 				}
-
 			} 
 			return score;
 		}
@@ -87,7 +83,6 @@
 				{
 					winner = P1Name;
 					loser = P2Name;
-					notturn= 2
 				}
 				else
 				{
@@ -140,10 +135,9 @@
 		endedTurn = "false";
 		return drawn;
 			}		
-
 		function convertCard(cardToConvert) { //Do not call this function more as it messes up the "Ace" system if called elsewhere.
-		var cardToConvert = cardToConvert%13;
-		if(cardToConvert > 10 || cardToConvert == 0)
+		cardToConvert = cardToConvert%13;
+		if(cardToConvert > 10 || cardToConvert === 0)
 			{
 				cardToConvert = 10;
 			}
@@ -162,7 +156,6 @@
 			}}
 		return cardToConvert;
 			}
-
 		function getSuite(cardToConvert) {
 		var suiteTier = (cardToConvert/13);
 		var suite ="";
@@ -200,7 +193,7 @@
 			$("div#changey").hide();
 		});
 		$("button#Draw").click(function(){
-			if(cardsInDeck.length == 0) //Probably not needed, but will be useful incase game goes on until deck is empty
+			if(cardsInDeck.length === 0) //Probably not needed, but will be useful incase game goes on until deck is empty for future variants.
 			{
 				alert("Deck is empty! Reshuffling deck."); 
 				deckShuffle();
@@ -229,7 +222,6 @@
 				$("#p1").html(P1);
 				over(P1);
 			}
-
 			else
 			{
 				turn--;
