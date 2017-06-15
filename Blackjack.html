@@ -1,0 +1,293 @@
+<html>
+<head>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+		
+		var cardsInDeck = new Array();
+		var P1 = 0;
+		var P1Name = "Player 1";
+		var P2Name = "Player 2";
+		var winner ="";
+		var loser ="";
+		var P2 = 0;
+		var turn = 1;
+		var endedTurn = "false";
+		var cardDrew;
+		var cardValue;
+		var suite;
+		var p1RevealedAces = 0;
+		var p2RevealedAces = 0;
+		var p1HiddenAces = 0;
+		var p2HiddenAces = 0;
+		function deckShuffle(){
+		cardsInDeck.splice(0,cardsInDeck.length);
+		for(index = 0; index < 52; index++)
+			{
+			cardsInDeck.push(index+1);
+			}
+		P1 = 0;
+		P2 = 0;
+		turn = 1;
+		p1RevealedAces = 0;
+		p2RevealedAces = 0;
+		p1HiddenAces = 0;
+		p2HiddenAces = 0;
+		$("#pturn").html(turn);
+		$("#p1").html(P1);
+		$("#p2").html(P2);
+		endedTurn = "false";
+		$("#result").html(null);
+		alert("Shuffling the deck!");
+		deal();
+		}
+		function Ace(score1){
+		
+			var score = Number(score1);
+			if(turn == 2)
+			{
+				while(score > 21 && p1RevealedAces > 0)
+				{
+					score-=10;
+					p1RevealedAces--;
+					p1HiddenAces++;
+				}
+				
+				while(score<=10 && p1HiddenAces > 0)
+				{
+					score+= 10;
+					p1RevealedAces++;
+					p1HiddenAces--;
+				}
+
+			}
+			else 
+			{
+				while(score>21 && p2RevealedAces > 0)
+				{
+					score-=10;
+					p2RevealedAces--;
+					p2HiddenAces++;
+				}
+				
+				while(score<=10 && p2HiddenAces > 0)
+				{
+					score+=10;
+					p2RevealedAces++;
+					p2HiddenAces--;
+				}
+
+			} 
+			return score;
+		}
+		
+		function over(score){
+			if(score > 21)
+			{	
+				if(turn==1)
+				{
+					winner = P1Name;
+					loser = P2Name;
+					notturn= 2
+				}
+				else
+				{
+					winner = P2Name;
+					loser = P1Name;
+				}
+				alert(loser + " drew a card with a Suite of " + suite + " with a value of " + cardValue + ". " + loser + " has a total value of " + score + " which has hit over 21! " + winner + " has won!");
+				deckShuffle();
+			}
+			
+			else if(score == 21)
+			{	
+				if(turn==2)
+				{
+					winner = P1Name;
+				}
+				else
+				{
+					winner = P2Name;
+				}
+				alert(winner + " drew a card with a Suite of " + suite + " with a value of " + cardValue + ". " + winner + " has a total value of " + score + "! " + winner + " has won!");
+				deckShuffle();
+			}
+		}
+		
+		function deal(){
+		$("button#Draw").click();
+		$("button#Draw").click();
+		$("button#Draw").click();
+		$("button#Draw").click();
+		}
+		
+		function valueCompare(){
+		if(P1>P2){
+			alert("Player 1 has a greater value with a score of " + P1 + ". Player 1 wins!");
+			}
+		else if(P2>P1){
+			alert("Player 2 has a greater value with a score of " + P2 + ". Player 2 wins!");
+			}
+		else{
+			alert("It is a tie!");
+			}
+			deckShuffle();
+		}
+		
+		function draw(){
+		var cardDrew = Math.floor(Math.random()*cardsInDeck.length);
+		var drawn = cardsInDeck[cardDrew];
+		cardsInDeck.splice(cardDrew, 1);
+		endedTurn = "false";
+		return drawn;
+			}		
+
+		function convertCard(cardToConvert) { //Do not call this function more as it messes up the "Ace" system if called elsewhere.
+		var cardToConvert = cardToConvert%13;
+		if(cardToConvert > 10 || cardToConvert == 0)
+			{
+				cardToConvert = 10;
+			}
+		else if(turn == 1){
+			if(cardToConvert == 1)
+			{
+			p1RevealedAces++;
+			cardToConvert = 11;
+			}
+		}
+		else{
+			if(cardToConvert == 1)
+			{
+			p2RevealedAces++;
+			cardToConvert = 11;
+			}}
+		return cardToConvert;
+			}
+
+		function getSuite(cardToConvert) {
+		var suiteTier = (cardToConvert/13);
+		var suite ="";
+		if(suiteTier <= 1){
+		suite = "Diamonds";
+		} 
+		else if(suiteTier <= 2){
+		suite = "Hearts";
+		}
+		else if(suiteTier <= 3){
+		suite = "Clubs";
+		}
+		else if(suiteTier <= 4){
+		suite = "Spades";
+		}
+	
+		return suite;
+			}
+			
+		
+		$("document").ready(function() {
+		deckShuffle();
+		$("#pturn").html(turn);
+		$("#p1").html(P1);
+		$("#p2").html(P2);
+		$("button#dealMe").click(function(){
+		deal();
+		$("button#dealMe").hide();
+		});
+		$("button#changeName").click(function(){
+			P1Name = $("input#inputP1").val();
+			P2Name = $("input#inputP2").val();
+			$("label#p1name").html(P1Name);
+			$("label#p2name").html(P2Name);
+			$("div#changey").hide();
+		});
+		$("button#Draw").click(function(){
+			if(cardsInDeck.length == 0) //Probably not needed, but will be useful incase game goes on until deck is empty
+			{
+				alert("Deck is empty! Reshuffling deck."); 
+				deckShuffle();
+				$("#result").html("Deck reshuffled~");
+			}
+			
+			else{
+			cardDrew = draw();
+			cardValue = convertCard(cardDrew);
+			suite = getSuite(cardDrew);
+			var playerMoving;
+			if(turn ==1)
+			{
+				playerMoving = P1Name;
+			}
+			else
+			{
+				playerMoving = P2Name;
+			}
+			$("#result").html(playerMoving + " drew a card " + cardDrew + " with a Suite of " + suite + " and a value of " + cardValue + ". There are now " + cardsInDeck.length + " cards left in deck now. " + "<!-- This code is for testing purposes only <br>The remaining values in the deck are: " +cardsInDeck.toString() + "-->");
+			if(turn == 1)
+			{
+				turn++;
+				P1 += cardValue;
+				P1 = Ace(P1);
+				$("#p1").html(P1);
+				over(P1);
+			}
+
+			else
+			{
+				turn--;
+				P2 += cardValue;
+				P2 = Ace(P2);
+				$("#p2").html(P2);
+				over(P2);
+			}
+			}
+			$("#pturn").html(turn);
+			$("#noAces1").html(p1RevealedAces);
+			$("#noAces2").html(p2RevealedAces);
+			});
+		$("button#endofTurn").click(function(){
+			if(turn == 1)
+			{
+			turn++;
+			}
+			else 
+			{
+			turn--;
+			}
+			$("#pturn").html(turn);	
+			
+			if(endedTurn == "false")
+			{
+				endedTurn = "true";
+			}
+			else
+			{
+				valueCompare();
+			}
+			});
+		});
+		
+		
+    </script>
+</head>
+<body>
+	<div id ="changey">
+	Player 1 Name: <input type="text" id = "inputP1" value="Player 1"></input><br><br>
+	Player 2 Name: <input type="text"id = "inputP2" value="Player 2"></input><br><br>
+	<button id="changeName">Change Names</button>
+	
+	<br><br>
+	</div>
+	Turn: Player <label id ="pturn"></label>
+	<br>
+	<label id ="p1name">Player 1 </label> Total: <label id ="p1"></label>
+	<br>
+	<label id ="p2name">Player 2 </label> Total: <label id ="p2"></label>
+	
+	<br><br><br>
+    <button id="Draw">Draw a Card</button>
+	<button id="endofTurn">End of Turn</button>
+	<button id="dealMe">Deal Me</button>
+	<div id = "result"></div>
+	 <!-- The following code is for testing purposes only. <br><br><br><label id ="noAces1"> </label> 
+<br><label id ="noAces2"> </label> -->
+</body>
+</html>
