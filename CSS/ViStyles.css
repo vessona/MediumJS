@@ -1,0 +1,89 @@
+#headBanner {
+	width: 100%;
+	height: 40%;
+	top: 5%;
+}
+
+#afterBanner {
+	width: 100%;
+	top: 45%;
+}
+
+.fName {
+	color: gold;
+	padding: 2%, 0, 2%, 0;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.lName {
+	color: purple;
+	padding: 2%, 0, 2%, 0;
+	font-weight: bolder;
+	font-size: 20px;
+}
+
+#UI {
+	width: 40%;
+
+	float: left;
+}
+
+#cardStuff {
+	float: left;
+	
+}
+
+.cardslot {
+	float: left;
+	display: inline-block;
+	border: ridge;
+	border-bottom-color: gold;
+	border-top-color: purple;
+	border-right-color: gold;
+	border-left-color: purple;
+	position: relative;
+}
+
+.cardAnimation {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.cardslot  img {
+	width: 79px;
+	height: 115px;
+}
+
+
+
+.cardSpacer {
+	height: 30px;
+	display: inline-block;
+}
+
+h2{
+	text-align: center;
+}
+
+.links {
+	width: 100%;
+	align-content: center;
+	display: inline-block;
+	float: left;
+	text-align: center;
+}
+
+.blackjacklinks {
+	display: inline-block;
+}
+
+#result{
+font-size: 14px;
+font-weight: normal;
+resize: none;
+overflow-y: scroll;
+}

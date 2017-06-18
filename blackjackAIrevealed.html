@@ -11,8 +11,8 @@
 		var P1 = 0; //Score or total value of the cards Player 1 has
 		var P2 = 0; //Score or total value of the cards Player 2 has
 		var P1Name = "Player 1"; //Name of Player 1, can be changed by user
-		var P2Name = "Player 2"; //Name of Player 2, can be changed by user
-		var winner =""; //Yes.
+		var P2Name = "Blackjack Dealer"; //Name of Player 2, can be changed by user
+		var winner ="";
 		var loser ="";
     	var turn = 1; //Variable to keep track of turns
 		var endedTurn = "false"; //Checks if the last turn done was "End of turn"
@@ -58,7 +58,7 @@
 		$("#p2c3Animation").attr("src", null);
 		$("#p2c4Animation").attr("src", null);
 		$("#p2c5Animation").attr("src", null);
-		if(turn ==1) //Assigns turn name, should honestly just be turnName = P1Name all the time but for future expansions(Powers! Magic!), I made it an if statement
+		if(turn ==1)
 		{
 		turnName = P1Name;
 		}
@@ -181,27 +181,22 @@
 		function deal(){ //Starts the game. Draws 2 cards for each player... in this case, we can just run "Click Draw button" 4 times.
 		$("button#Draw").click();
 		$("button#Draw").click();
-		$("button#Draw").click();
-		$("button#Draw").click();
 		}
 		
 		function valueCompare(){ //Compares the scores of Player 1 and Player 2 and returns a message saying who the winner is.
 		if(P1>P2){
-				alert("Player 1 has a greater value with a score of " + P1 + ". Player 1 wins!");
-				$("#result").append(P1Name + " has a greater value with a score of " + P1 + ". " +P1Name +" wins!&#013; &#010;");
+			alert("Player 1 has a greater value with a score of " + P1 + ". Player 1 wins!");
+			$("#result").append(P1Name + " has a greater value with a score of " + P1 + ". " +P1Name +" wins!&#013; &#010;");
 			}
 		else if(P2>P1){
-				alert("Player 2 has a greater value with a score of " + P2 + ". Player 2 wins!");
-				$("#result").append(P2Name + " has a greater value with a score of " + P2 + ". " +P2Name +" wins!&#013; &#010;");
-			
+			alert("Player 2 has a greater value with a score of " + P2 + ". Player 2 wins!");
+			$("#result").append(P2Name + " has a greater value with a score of " + P2 + ". " +P2Name +" wins!&#013; &#010;");
 			}
 		else{
-				alert("It is a tie!");
-				$("#result").append("It is a tie!");
+			alert("It is a tie!");
+			$("#result").append("It is a tie!");
 			}
-				deckShuffle();
-				
-			
+			deckShuffle();
 		}
 		
 		function draw(){ //Simulates a Player drawing a card
@@ -219,7 +214,7 @@
 		{
 			var cardValue = p2Cards+1;
 			$("#p2c" +(cardValue) + "Animation").attr("src", "Images/sparkles" + (cardValue+5) + ".gif");
-			setTimeout( function(){ //To ensure odd delays don't reveal the card
+			setTimeout( function(){ 
 			$("#p2card" + (cardValue)).attr("src", "Images/cards/" + (drawn) + ".png");
 			}, 500);
 		}
@@ -271,7 +266,7 @@
 		
 		$("document").ready(function() {
 		deckShuffle(); //Shuffle Deck
-		if(turn ==1) //I mean... it shuffled, I don't really need this code but for future expansions maybe.
+		if(turn ==1)
 		{
 		turnName = P1Name;
 		}
@@ -295,8 +290,6 @@
 		$("button#changeName").click(function(){ //Vanity! I mean... User Experience, yeah.
 			P1Name = $("input#inputP1").val();
 			$("label#p1name").html(P1Name);
-			P2Name = $("input#inputP2").val();
-			$("label#p2name").html(P2Name);
 			$("div#changey").hide();  //Change name is only needed once per session so it is hidden afterwards
 			if(turn ==1)
 			{
@@ -344,6 +337,15 @@
 				P1 = Ace(P1); //Checks to see if Player 1 has atleast one Ace and there is a better score for Player 1 to use
 				$("#p1").html(P1); //Updates Player 1s score
 				over(P1); //Checks to see if a winner/loser is revealed from the score
+				
+				if(turn == 2 && ((P2 < P1) && (P1<21) ) || p2Cards < 2)
+				{
+					$("button#Draw").click();
+				}
+				else if(turn == 2)
+				{
+					$("button#endofTurn").click();
+				}
 			}
 			else
 			{
@@ -385,15 +387,26 @@
 			{
 			turnName = P2Name;
 			}
-			$("#pturn").html(turnName);	//To update whose turn it is. People lose track! User Experience!
+			$("#pturn").html(turnName);	
 			
 			if(endedTurn == "false") //If the other player didn't end their turn as their last move
 			{
-				endedTurn = "true"; //So if the next move is to End their turn as well/stay
+				endedTurn = "true";
 				if(turn == 2)
 				{
+				
 				$("#result").append(P1Name + " has passed and ended their turn!&#013;&#010;&#013;&#010;");
-				document.getElementById("result").scrollTop = document.getElementById("result").scrollHeight; //To make it scroll down! Maybe I should jQuery this, was having issues
+				document.getElementById("result").scrollTop = document.getElementById("result").scrollHeight; 
+				
+					if(P2>=P1)
+					{
+					$("button#endofTurn").click();
+					}
+					else if(P1<21)
+					{
+					$("button#Draw").click();
+					}
+				
 				}
 				else
 				{
@@ -426,16 +439,15 @@
 	<div id="UI">
 	<div id ="changey">
 	Player 1 Name: <input type="text" id = "inputP1" value="Player 1"></input><br><br>
-	Player 2 Name: <input type="text" id = "inputP2" value="Player 2"></input><br><br>
 	<button id="changeName">Change Names</button>
 	
 	<br><br>
 	</div>
 	Turn: <label id ="pturn"></label>
 	<br>
-	<label id ="p1name">Player 1</label> Total: <label id ="p1"></label>
+	<label id ="p1name">Player 1 </label> Total: <label id ="p1"></label>
 	<br>
-	<label id ="p2name">Player 2</label> Total: <label id ="p2"></label>
+	<label id ="p2name">Blackjack Dealer</label> Total: <label id ="p2"></label>
 	
 	<br><br><br>
     <button class="waitForAnimation" id="Draw">Hit</button>
