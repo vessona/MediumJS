@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="CSS/material.min.css">
 	<link rel="stylesheet" href="CSS/ViStyles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="JS/material.min.js"></script>
 	<script src="JS/blackjack.js"></script>
     <script>
@@ -42,22 +44,14 @@
 		p1Cards = 0;
 		p2Cards = 0;
         endedTurn = "false";
-		$("#p1card1").attr("src", "Images/cards/blankCard.png"); //Resets the pictures of the cards
-		$("#p1card2").attr("src", "Images/cards/blankCard.png");
-		$("#p1card3").attr("src", "Images/cards/blankCard.png");
-		$("#p1card4").attr("src", "Images/cards/blankCard.png");
-		$("#p1card5").attr("src", "Images/cards/blankCard.png");
-		$("#p2card1").attr("src", "Images/cards/blankCard.png");
-		$("#p2card2").attr("src", "Images/cards/blankCard.png");
-		$("#p2card3").attr("src", "Images/cards/blankCard.png");
-		$("#p2card4").attr("src", "Images/cards/blankCard.png");
-		$("#p2card5").attr("src", "Images/cards/blankCard.png");
-		$("#p1c3Animation").attr("src", null); //Resets the animations of the cards. No real need for cards 1-2 because they are immediately given in this 2 Player version.
-		$("#p1c4Animation").attr("src", null);
-		$("#p1c5Animation").attr("src", null);
-		$("#p2c3Animation").attr("src", null);
-		$("#p2c4Animation").attr("src", null);
-		$("#p2c5Animation").attr("src", null);
+	for(var p=1; p<3;p++)
+        	for(var c =1; c<6;c++)
+        		$("#p"+p+"card"+c).attr("src", "Images/cards/blankCard.png");
+        		
+        for(var p=1; p<3; p++)
+        	for(var c=3; c<6; c++)
+        	$("#p"+p+"c"+c+"Animation").attr("src", null);
+			
 		if(turn ==1) //Assigns turn name, should honestly just be turnName = P1Name all the time but for future expansions(Powers! Magic!), I made it an if statement
 		{
 		turnName = P1Name;
